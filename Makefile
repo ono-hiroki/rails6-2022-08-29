@@ -1,4 +1,5 @@
-WEB_CONTAINER_ID=`docker ps | grep web | awk '{print $$1}'`
+#WEB_CONTAINER_ID=`docker ps | grep web | awk '{print $$1}'`
+WEB_CONTAINER_ID=web
 DB_CONTAINER_ID=`docker ps | grep db | awk '{print $$1}'`
 
 define DOCKER_COMPOSE_BUILD
@@ -20,7 +21,8 @@ endef
 tail-logs:
 	docker-compose logs -f web
 
-bash: docker exec -it $(WEB_CONTAINER_ID) bash
+bash:
+	docker exec -it web /bin/bash && cd bin
 
 db-bash:
 	docker exec -e LANG=C.UTF-8 -e PGHOST=db -e PGUSER=postgres -e PGPASSWORD=password -it $(DB_CONTAINER_ID) bash
@@ -64,7 +66,7 @@ s:
 p:
 	docker-compose stop
 c:
-	docker-compose exec web ./bin/rails c
+	 docker-compose exec web ./bin/rails c -s
 r:
 	docker-compose exec web bundle exec ./bin/rspec
 rr:
