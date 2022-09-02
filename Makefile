@@ -20,8 +20,7 @@ endef
 tail-logs:
 	docker-compose logs -f web
 
-bash:
-	docker exec -it $(WEB_CONTAINER_ID) bash
+bash: docker exec -it $(WEB_CONTAINER_ID) bash
 
 db-bash:
 	docker exec -e LANG=C.UTF-8 -e PGHOST=db -e PGUSER=postgres -e PGPASSWORD=password -it $(DB_CONTAINER_ID) bash
@@ -65,14 +64,18 @@ s:
 p:
 	docker-compose stop
 c:
-	docker-compose exec web rails c
+	docker-compose exec web ./bin/rails c
 r:
-	docker-compose exec web bundle exec rspec
+	docker-compose exec web bundle exec ./bin/rspec
 rr:
-	docker-compose exec web bundle exec rake routes
+	docker-compose exec web bundle exec ./bin/rake routes
 gd:
-	docker-compose exec web bundle exec rake graphql:dump_schema
+	docker-compose exec web bundle exec ./bin/rake graphql:dump_schema
 npm-start:
 	docker exec -it $(WEB_CONTAINER_ID) bash -c 'cd frontend && npm start'
 attach:
 	 ./bin/docker-compose-attach web
+up:
+	docker-compose up
+down:
+	docker-compose down
