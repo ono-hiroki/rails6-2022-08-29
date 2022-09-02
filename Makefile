@@ -74,3 +74,5 @@ gd:
 	docker-compose exec web bundle exec rake graphql:dump_schema
 npm-start:
 	docker exec -it $(WEB_CONTAINER_ID) bash -c 'cd frontend && npm start'
+attach:
+	 ./bin/docker-compose-attach web
